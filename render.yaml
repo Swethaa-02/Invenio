@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: invenio-backend
+    env: docker
+    dockerContext: backend
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
