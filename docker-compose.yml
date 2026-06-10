@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SQLALCHEMY_DATABASE_URI=sqlite+aiosqlite:///data/sql_app.db
+    volumes:
+      - backend-db:/app/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - BACKEND_API_URL=http://backend:8000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - backend
+
+volumes:
+  backend-db:
